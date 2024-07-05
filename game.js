@@ -23,14 +23,14 @@ var supply=document.getElementById("supply")
 
 var zombieDivs=document.getElementsByClassName("zombie")
 var zombies = [];
-// [...zombieDivs].forEach((div) =>  {
-//     zombies.push({
-//         element: div,
-//         X: Math.random() * mapWidth,
-//         Y: Math.random() * mapHeight,
-//         Speed: Math.random() * 5,
-//     })
-// })
+[...zombieDivs].forEach((div) =>  {
+    zombies.push({
+        element: div,
+        X: Math.random() * mapWidth,
+        Y: Math.random() * mapHeight,
+        Speed: Math.random() * 5,
+    })
+})
 
 var alive = true;
 var score=0
