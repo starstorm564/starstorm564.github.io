@@ -1,16 +1,36 @@
+function detectMobile() {
+    const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ];
+    
+    return toMatch.some((toMatchItem) => {
+        return navigator.userAgent.match(toMatchItem);
+    });
+}
+
+const mapWidth =  window.innerWidth;
+const mapHeight = window.innerHeight;
+const isMobile = detectMobile();
+
 var player=document.getElementById("player")
 var supply=document.getElementById("supply")
 
 var zombieDivs=document.getElementsByClassName("zombie")
 var zombies = [];
-[...zombieDivs].forEach((div) =>  {
-    zombies.push({
-        element: div,
-        X: Math.random() * 800,
-        Y: Math.random() * 800,
-        Speed: Math.random() * 5,
-    })
-})
+// [...zombieDivs].forEach((div) =>  {
+//     zombies.push({
+//         element: div,
+//         X: Math.random() * mapWidth,
+//         Y: Math.random() * mapHeight,
+//         Speed: Math.random() * 5,
+//     })
+// })
 
 var alive = true;
 var score=0
@@ -18,13 +38,63 @@ var playerX = window.innerWidth / 2;
 var playerY = window.innerHeight / 2;
 var playerSpeed = 20;
 
-supply.style.left = Math.random() * 800 + 'px'
-supply.style.top = Math.random() * 800 + 'px'
+var playerVelocity =  {
+    x: 0,
+    y: 0 
+};
 
-document.addEventListener('keydown', function(event) {
-    var key = event.key;
-    moveplayer(event.key)
-});
+supply.style.left = Math.random() * mapWidth + 'px'
+supply.style.top = Math.random() * mapHeight + 'px'
+
+
+if (isMobile) {
+    console.log('mobile mode enabled')
+
+    document.addEventListener('swiped-right', function(e) {
+        console.log(e.target); // the element that was swiped
+        playerVelocity =  {
+            x: 10,
+            y: 0 
+        }
+
+    });
+
+    document.addEventListener('swiped-left', function(e) {
+        console.log(e.target); // the element that was swiped
+        playerVelocity =  {
+            x: -10,
+            y: 0 
+        }   
+     });
+
+    document.addEventListener('swiped-up', function(e) {
+        console.log(e.target); // the element that was swiped
+        playerVelocity =  {
+            x: 0,
+            y: -10 
+        }
+
+    });
+
+    document.addEventListener('swiped-down', function(e) {
+        console.log(e.target); // the element that was swiped
+        playerVelocity =  {
+            x: 0,
+            y: 10 
+        }
+
+    });
+
+}
+
+else {
+
+    document.addEventListener('keydown', function(event) {
+        var key = event.key;
+        moveplayer(event.key)
+    });
+    
+}
 
 
 function moveplayer(direction) {
@@ -68,7 +138,6 @@ function gameover() {
     document.getElementById("gameover").style.display="block"
 }
 
-
 setInterval(() => {
 
 
@@ -76,8 +145,12 @@ setInterval(() => {
         return;
     }
 
-    player.style.top = playerY + 'px';
-    player.style.left = playerX + 'px';
+    playerY += playerVelocity.y;
+    playerX += playerVelocity.x;
+    console.log(playerVelocity, playerX, playerY)
+    Math.min(Math.max(playerY, 0), document.body.scrollHeight)
+    player.style.top = Math.min(Math.max(playerY, 0), document.body.scrollHeight - player.getBoundingClientRect().height) + 'px';
+    player.style.left = Math.min(Math.max(playerX, 0), document.body.scrollWidth - player.getBoundingClientRect().width) + 'px';
 
     zombies.forEach((zombie) =>  {
         if (zombie.X < playerX) {
@@ -113,15 +186,15 @@ setInterval(() => {
 
             zombies.push({
                 element: newZombie,
-                X: Math.random() * 800,
-                Y: Math.random() * 800,
+                X: Math.random() * mapWidth,
+                Y: Math.random() * mapHeight,
                 Speed: Math.random() * 5,
             })
 
             document.body.appendChild(newZombie);
             document.getElementById("score").innerHTML="score: "+score
-            supply.style.left = Math.random() * 800 + 'px'
-            supply.style.top = Math.random() * 800 + 'px'
+            supply.style.left = Math.random() * mapWidth + 'px'
+            supply.style.top = Math.random() * mapHeight + 'px'
         }
 
 
