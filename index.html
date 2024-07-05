@@ -1,0 +1,46 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+        rel="stylesheet"/>
+<link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css"/>
+<script src="https://cdn.tailwindcss.com/3.3.0"></script>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            fontFamily: {
+                sans: ["Roboto", "sans-serif"],
+                body: ["Roboto", "sans-serif"],
+                mono: ["ui-monospace", "monospace"],
+            },
+        },
+        corePlugins: {
+            preflight: false,
+        },
+    };  
+</script>
+
+<div class="bg-black h-full">
+    <div id="score" class="text-red-600">
+        score 
+    </div>
+    <div id="player" class="player w-8 h-8 bg-white absolute top-1/2 left-1/2"></div>
+    <div id="zombie" class="zombie w-8 h-8 bg-green-700 absolute top-1/2 left-1/2"></div>
+    <div class="flex text-red-700 uppercase justify-center content-center">
+        zombie run
+    </div>
+    <div id="supply" class="animate-pulse supplies w-8 h-8 bg-lime-500 absolute top-1/2 left-1/2">
+    </div>
+</div>
+<script src="game.js"></script>
+
+<div id="gameover" class="absolute top-1/2 left-1/2 bg-red-600 h-auto hidden">
+    <h1>
+        game over
+    </h1>
+    <button OnClick="window.location.reload();" class="box-border border-black w-24 h-8 border-4">
+        restart
+    </button>
+</div>
